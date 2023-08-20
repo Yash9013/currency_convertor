@@ -1,7 +1,5 @@
 import 'package:currency_converter/providers/currency_provider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../commonwidget/common_widget.dart';
 import '../utils/app_colors.dart';
 import '../utils/constants.dart';
@@ -86,12 +84,13 @@ class _AnyToAnyState extends State<AnyToAny> {
                     },
                   ),
                 ),
-                const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: Text(
-                      'To',
-                      style: TextStyle(fontWeight: FontWeight.w600),
-                    )),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: GestureDetector(
+                    onTap: () => widget.currencyProvider.swapCurrencies(),
+                    child: const Icon(Icons.swap_horiz_sharp),
+                  ),
+                ),
                 Expanded(
                   child: DropdownButtonFormField<String>(
                     decoration: commonInputDecoration(),
