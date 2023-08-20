@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../apiservices/api_service.dart';
 import '../utils/constants.dart';
 
@@ -87,6 +86,28 @@ class CurrencyProvider extends ChangeNotifier {
     notifyListeners();
 
     return answer;
+  }
+
+  swapCurrencies() {
+    if (currencyList.containsKey(_dropDownValue1) &&
+        currencyList.containsKey(_dropDownValue2) &&
+        _currencyRatesList.containsKey(_dropDownValue1) &&
+        _currencyRatesList.containsKey(_dropDownValue2)) {
+      var tempCurrency1 = _dropDownValue1;
+      var rate1 = _currencyRatesList[_dropDownValue1];
+      var rate2 = _currencyRatesList[_dropDownValue2];
+
+      _dropDownValue1 = _dropDownValue2;
+      _currencyRatesList[_dropDownValue1] = _currencyRatesList[_dropDownValue2];
+
+      _dropDownValue2 = tempCurrency1;
+      _currencyRatesList[_dropDownValue2] = rate1;
+      _currencyRatesList[_dropDownValue1] = rate2;
+
+      notifyListeners();
+
+      debugPrint('Swapped $_dropDownValue1  with $_dropDownValue2');
+    }
   }
 
   defaultText() {
