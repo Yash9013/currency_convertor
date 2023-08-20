@@ -1,25 +1,26 @@
 import 'package:currency_converter/providers/currency_provider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../commonwidget/common_widget.dart';
 import '../utils/app_colors.dart';
 import '../utils/constants.dart';
 
-class UsdToAny extends StatefulWidget {
+class AnyToAny extends StatefulWidget {
   final CurrencyProvider currencyProvider;
 
-  const UsdToAny({Key? key, required this.currencyProvider}) : super(key: key);
+  const AnyToAny({Key? key, required this.currencyProvider}) : super(key: key);
 
   @override
-  State<UsdToAny> createState() => _UsdToAnyState();
+  State<AnyToAny> createState() => _AnyToAnyState();
 }
 
-class _UsdToAnyState extends State<UsdToAny> {
-  final usdController = TextEditingController();
+class _AnyToAnyState extends State<AnyToAny> {
+  final amountController = TextEditingController();
 
   @override
   void dispose() {
-    usdController.dispose();
+    amountController.dispose();
     super.dispose();
   }
 
@@ -42,7 +43,7 @@ class _UsdToAnyState extends State<UsdToAny> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              currencyText,
+              anyCurrencyText,
               style: TextStyle(
                   fontWeight: FontWeight.w500, fontSize: height * 0.02),
             ),
@@ -50,10 +51,10 @@ class _UsdToAnyState extends State<UsdToAny> {
               height: height * 0.02,
             ),
             TextFormField(
-              controller: usdController,
+              controller: amountController,
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.all(width * 0.02),
-                labelText: usdLableText,
+                labelText: anyLableText,
                 labelStyle: const TextStyle(color: blackColor),
                 border: commonBorder(),
                 focusedBorder: commonBorder(),
@@ -66,11 +67,10 @@ class _UsdToAnyState extends State<UsdToAny> {
             Row(
               children: [
                 Expanded(
-                  flex: 2,
                   child: DropdownButtonFormField<String>(
                     decoration: commonInputDecoration(),
-                    value: widget.currencyProvider.dropDownValue,
-                    items: widget.currencyProvider.currencyList.keys
+                    value: widget.currencyProvider.dropDownValue1,
+                    items: widget.currencyProvider.currencyList1.keys
                         .toSet()
                         .toList()
                         .map<DropdownMenuItem<String>>(
@@ -81,31 +81,55 @@ class _UsdToAnyState extends State<UsdToAny> {
                         )
                         .toList(),
                     onChanged: (value) {
-                      widget.currencyProvider.onSelectedValue(value!);
-                      debugPrint('selected Currency $value');
+                      widget.currencyProvider.onSelectedValue1(value!);
+                      debugPrint('selected Currency 1 $value');
                     },
                   ),
                 ),
-                SizedBox(
-                  width: width * 0.04,
+                const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Text(
+                      'To',
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    )),
+                Expanded(
+                  child: DropdownButtonFormField<String>(
+                    decoration: commonInputDecoration(),
+                    value: widget.currencyProvider.dropDownValue2,
+                    items: widget.currencyProvider.currencyList2.keys
+                        .toSet()
+                        .toList()
+                        .map<DropdownMenuItem<String>>(
+                          (e) => DropdownMenuItem(
+                            value: e,
+                            child: Text(e),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: (value) {
+                      widget.currencyProvider.onSelectedValue2(value!);
+                      debugPrint('selected Currency 2 $value');
+                    },
+                  ),
                 ),
-                Expanded(child: commonButton(
-                  onPressed: () {
-                    switch (usdController.text.trim()) {
-                      case '':
-                        commonSnackBar(context, message1);
-                      default:
-                        widget.currencyProvider
-                            .usdToAnyFunc(usdController.text.trim());
-                    }
-                  },
-                )),
               ],
             ),
             SizedBox(
               height: height * 0.02,
             ),
-            Text(widget.currencyProvider.usdResultText)
+            commonButton(onPressed: () {
+              switch (amountController.text.trim()) {
+                case '':
+                  commonSnackBar(context, message2);
+                default:
+                  widget.currencyProvider
+                      .anyToAnyFunc(amountController.text.trim());
+              }
+            }),
+            SizedBox(
+              height: height * 0.02,
+            ),
+            Text(widget.currencyProvider.anyResultText)
           ],
         ),
       ),

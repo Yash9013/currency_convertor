@@ -1,3 +1,4 @@
+import 'package:currency_converter/screens/any_to_any.dart';
 import 'package:currency_converter/screens/usd_to_any.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +18,7 @@ class MainScreen extends StatelessWidget {
         context.read<CurrencyProvider>().defaultText();
       },
       child: Scaffold(
+        backgroundColor: whiteColor,
         appBar: AppBar(
           elevation: 0,
           title: Text(
@@ -36,7 +38,12 @@ class MainScreen extends StatelessWidget {
                 child: CircularProgressIndicator(),
               );
             } else {
-              return UsdToAny(currencyProvider: cP);
+              return Column(
+                children: [
+                  UsdToAny(currencyProvider: cP),
+                  AnyToAny(currencyProvider: cP),
+                ],
+              );
             }
           },
         ),
